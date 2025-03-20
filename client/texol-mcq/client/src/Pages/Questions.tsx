@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
@@ -7,14 +7,17 @@ import { BiBookmark } from "react-icons/bi";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import useWindowWidth from "../hooks/useWindowWidth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type Question = {
   id: number;
   questionText: string;
   options: string[];
+  correctAnswer: string;
 };
 
 export default function Questions() {
+  const navigate = useNavigate()
   const symbols = [
     { id: 1, color: "text-green-600", label: "Attended" },
     { id: 2, color: "text-red-600", label: "Not Attended" },
@@ -29,6 +32,8 @@ export default function Questions() {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(60);
+  const [score, setScore] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   useEffect(() => {
     if (isLargeScreen) {
@@ -62,11 +67,27 @@ export default function Questions() {
   }, [timeLeft]);
 
   const moveToNextQuestion = () => {
+    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+      setScore((prevScore) => prevScore + 5)
+    }
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
       setSelectedAnswer(null);
       setTimeLeft(60);
+    } else {
+      setQuizCompleted(true);
     }
+  };
+
+  useEffect(() => {
+    if (quizCompleted) {
+      navigateToFeedbackPage();
+    }
+  }, [quizCompleted]);
+
+  const navigateToFeedbackPage = () => {
+    navigate("/success", { state: { score } });
   };
 
   const moveToPreviousQuestion = () => {

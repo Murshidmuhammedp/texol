@@ -5,10 +5,18 @@ const FeedbackSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    score: {
+        type: Number,
+    },
+    rating: {
+        type: Number
+    },
     feedback: {
         type: String,
     }
-}, { timestamps: true });
+}, {
+    timestamps: true
+});
 const Feedback = mongoose.model('Feedback', FeedbackSchema);
 
 export default Feedback;
