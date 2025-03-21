@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
 import customAxios from "../Api/axiosInstatnce";
 import { useFormik } from "formik";
+import { loginSchema } from "../Validation/LoginValidation";
 
 
 type CountryOption = {
@@ -32,6 +33,7 @@ export default function Login() {
       mobile: "",
       password: ""
     },
+    validationSchema: loginSchema,
     onSubmit: async (values) => {
       try {
         const response = await customAxios.post("/api/auth/login", values)
@@ -49,23 +51,7 @@ export default function Login() {
     countryOptions[0]
   );
 
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const response = await customAxios.post("/api/auth/login", {});
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        alert("Login successful!");
-        navigate("/question");
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed. Try again.");
-    }
-  };
 
   return (
     <div className="w-full flex-1  flex-col flex justify-center items-center gap-10 ">
@@ -114,7 +100,9 @@ export default function Login() {
             onBlur={handleBlur}
             name="mobile"
           />
+
         </div>
+          {errors.mobile && <p className="text-red-500 text-sm mt-2">{errors.mobile}</p>}
 
         <label className="text-[18px] font-bold mt-4 ">Password</label>
         <input
@@ -126,7 +114,7 @@ export default function Login() {
           onBlur={handleBlur}
           name="password"
         />
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password}</p>}
         <button
           type="submit"
           className="mt-8 py-2 font-semibold text-[14px] bg-[#2A586F]  text-white border-2 border-[#2A586F] hover:bg-transparent hover:text-[#2A586F] rounded-md">

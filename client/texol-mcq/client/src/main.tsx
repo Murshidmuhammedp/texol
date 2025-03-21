@@ -8,7 +8,7 @@ import Login from './Pages/Login.tsx'
 import Register from './Pages/Register.tsx'
 import ErrorPage from './Components/ErrorPage.tsx'
 
-import Success from './Pages/Success.tsx'
+import Success from './Pages/Feedback.tsx'
 import Questions from './Pages/Questions.tsx'
 
 const router = createBrowserRouter([
