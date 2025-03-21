@@ -2,7 +2,7 @@ import { JSX, useState } from "react";
 import { countryOptions } from "./Login";
 import { Link, useNavigate } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
-import axios from "axios";
+import customAxios from '../Api/axiosInstatnce.js'
 
 
 type CountryOption = {
@@ -26,7 +26,7 @@ export default function Register() {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post("http://localhost:4001/api/auth/register", { fullName: fullName, email: email, mobile: mobile, status: status, password: password });
+      const response = await customAxios.post("/api/auth/register", { fullName: fullName, email: email, mobile: mobile, status: status, password: password });
       alert(response.data.message)
       navigate('/login')
     } catch (err: any) {

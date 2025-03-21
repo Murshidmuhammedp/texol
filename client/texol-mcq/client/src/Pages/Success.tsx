@@ -1,4 +1,4 @@
-import axios from "axios";
+import customAxios from '../Api/axiosInstatnce.js'
 import { useEffect, useState } from "react";
 import { GoHome } from "react-icons/go";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ export default function Success() {
   ];
 
   const handleSubmit = async () => {
-    const response = await axios.post('http://localhost:4001/api/feedback/submit', { score, feedback, rating })
+    const response = await customAxios.post('/api/feedback/submit', { score, feedback, rating })
     alert(response.data.message)
     console.log(response)
     navigate('/')

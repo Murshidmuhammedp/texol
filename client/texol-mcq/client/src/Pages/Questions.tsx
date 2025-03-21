@@ -6,8 +6,8 @@ import { IoMdTime } from "react-icons/io";
 import { BiBookmark } from "react-icons/bi";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import useWindowWidth from "../hooks/useWindowWidth";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import customAxios from '../Api/axiosInstatnce.js'
 
 type Question = {
   id: number;
@@ -46,7 +46,7 @@ export default function Questions() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get('http://localhost:4001/api/test/questions')
+        const response = await customAxios.get('/api/test/questions')
         setQuestions(response.data)
       } catch (error) {
         console.error("Error fetching questions:", error);

@@ -1,7 +1,7 @@
-import axios from "axios";
 import { JSX, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
+import customAxios from '../Api/axiosInstatnce.js'
 
 type CountryOption = {
   value: string;
@@ -37,7 +37,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post("http://localhost:4001/api/auth/login", { mobile: mobile, password: password });
+      const response = await customAxios.post("/api/auth/login", { mobile: mobile, password: password });
       console.log(response,"gvh")
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
