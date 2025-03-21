@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
-import { FiLogOut } from "react-icons/fi";
+// import { FiLogOut } from "react-icons/fi";
 import { BiBookmark } from "react-icons/bi";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import useWindowWidth from "../hooks/useWindowWidth";
