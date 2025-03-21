@@ -38,7 +38,6 @@ export default function Login() {
     setError('');
     try {
       const response = await customAxios.post("/api/auth/login", { mobile: mobile, password: password });
-      console.log(response,"gvh")
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         alert("Login successful!");

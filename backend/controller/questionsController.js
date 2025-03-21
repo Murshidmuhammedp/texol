@@ -13,19 +13,16 @@ export const addQuestion = async (req, res) => {
     try {
         const { questionText, options, correctAnswer } = req.body;
 
-        // Validate request data
         if (!questionText || !correctAnswer || !Array.isArray(options) || options.length < 2) {
             return res.status(400).json({ message: "Invalid input. Ensure all fields are correctly filled." });
         }
 
-        // Create a new question
         const newQuestion = new Questions({
             questionText,
             options,
             correctAnswer
         });
 
-        // Save to database
         await newQuestion.save();
 
         res.status(201).json({ message: "Question added successfully!", question: newQuestion });

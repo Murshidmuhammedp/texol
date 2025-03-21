@@ -29,10 +29,14 @@ export default function Success() {
     { rating: 5, emoji: '😁', label: 'Very Satisfied' }
   ];
 
+  const token = localStorage.getItem("token");
   const handleSubmit = async () => {
-    const response = await customAxios.post('/api/feedback/submit', { score, feedback, rating })
+    const response = await customAxios.post('/api/feedback/submit', { score, feedback, rating }, {
+      headers: {
+        Authorization: token
+      }
+    });
     alert(response.data.message)
-    console.log(response)
     navigate('/')
   }
 

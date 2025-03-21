@@ -1,11 +1,11 @@
 import Feedback from "../models/feedbackSchema.js";
-import ApiError from "../utils/apiError.js";
 
 export const userFeedback = async (req, res, next) => {
-    const {  score, rating, feedback } = req.body;
+    const { score, rating, feedback } = req.body;
+    const userId = req.user
     try {
         if (!userId) {
-            throw new ApiError(404, "Invalid input data. userId are required.");
+            return res.status(404).json({ message: "UserId not found" });
         };
         const newFeedback = new Feedback({
             userId,
@@ -18,5 +18,5 @@ export const userFeedback = async (req, res, next) => {
         return res.status(201).json({ message: 'Feedback submitted' });
     } catch (err) {
         next(err)
-    }; 
+    };
 };

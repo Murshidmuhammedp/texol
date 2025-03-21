@@ -43,10 +43,15 @@ export default function Questions() {
     }
   }, [isLargeScreen]);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await customAxios.get('/api/test/questions')
+        const response = await customAxios.get('/api/test/questions', {
+          headers: {
+            Authorization: token
+          }
+        });
         setQuestions(response.data)
       } catch (error) {
         console.error("Error fetching questions:", error);
