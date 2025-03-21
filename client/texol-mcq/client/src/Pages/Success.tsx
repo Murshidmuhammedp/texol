@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoHome } from "react-icons/go";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -7,6 +7,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 export default function Success() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!location.state || location.state.score === null) {
+      navigate("/login");
+    }
+  }, [location, navigate]);
+
+  if (!location.state || location.state.score === null) {
+    return null;
+  }
   const { score } = location.state
 
   const [rating, setSelectedRating] = useState<number | null>(null);
@@ -20,8 +30,10 @@ export default function Success() {
   ];
 
   const handleSubmit = async () => {
-    const response = await axios.post('http://localhost:4001/api/feedback/submit', { score, feedback, rating, userId })
+    const response = await axios.post('http://localhost:4001/api/feedback/submit', { score, feedback, rating })
     alert(response.data.message)
+    console.log(response)
+    navigate('/')
   }
 
   return (
@@ -59,7 +71,7 @@ export default function Success() {
               key={item.rating}
               onClick={() => setSelectedRating(item.rating)}
               className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl
-            ${selectedRating === item.rating
+            ${rating === item.rating
                   ? 'bg-[#2A586F] '
                   : 'bg-gray-200 hover:bg-gray-300'}`}
               aria-label={item.label}
@@ -73,16 +85,16 @@ export default function Success() {
           <textarea
             className="w-full border-[#c4c4c4] border-1 rounded-md p-4 h-24 focus:outline-none  shadow-md"
             placeholder="Add a comment"
-            value={comment}
+            value={feedback}
             onChange={(e) => setComment(e.target.value)}
           />
         </div>
 
         <button
 
-          disabled={selectedRating === null}
+          disabled={rating === null}
           className={`md:w-1/3 bg-[#2A586F] lg:px-4 border px-1  py-2 rounded-md text-white font-bold text-sm
-          ${selectedRating !== null
+          ${rating !== null
               ? ' hover:bg-transparent hover:text-[#2A586F] border-[#2A586F] '
               : ' bg-[#2A586F] cursor-not-allowed'}`}
           onClick={handleSubmit}

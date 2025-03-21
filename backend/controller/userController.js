@@ -56,10 +56,10 @@ export const signIn = async (req, res, next) => {
         };
 
         // Generate JWT
-        const token = Jwt.sign({ id: validUser._id }, process.env.USER_JWT_SECRET_KEY, { expiresIn: "1h" });
+        const token = Jwt.sign({ id: validUser._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
         const { password: hashedPassword, ...rest } = validUser._doc;
         // cookie setting 
-        res.cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 60 * 1000) });
+        // res.cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 60 * 1000) });
         return res.status(200).json({ message: "successfully logged in", token, data: rest });
     } catch (error) {
         next(error);
