@@ -1,7 +1,7 @@
 import { JSX, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
-import customAxios from '../Api/axiosInstatnce.js'
+import customAxios from "../Api/axiosInstatnce";
 
 type CountryOption = {
   value: string;

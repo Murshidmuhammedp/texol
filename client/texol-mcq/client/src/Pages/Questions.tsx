@@ -7,7 +7,7 @@ import { BiBookmark } from "react-icons/bi";
 import { IoArrowBack, IoArrowForward } from "react-icons/io5";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { useNavigate } from "react-router-dom";
-import customAxios from '../Api/axiosInstatnce.js'
+import customAxios from "../Api/axiosInstatnce";
 
 type Question = {
   id: number;

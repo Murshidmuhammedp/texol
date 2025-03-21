@@ -1,7 +1,7 @@
-import customAxios from '../Api/axiosInstatnce.js'
 import { useEffect, useState } from "react";
 import { GoHome } from "react-icons/go";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import customAxios from "../Api/axiosInstatnce";
 
 
 export default function Success() {
