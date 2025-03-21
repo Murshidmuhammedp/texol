@@ -2,6 +2,8 @@ import { JSX, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select, { SingleValue } from "react-select";
 import customAxios from "../Api/axiosInstatnce";
+import { useFormik } from "formik";
+
 
 type CountryOption = {
   value: string;
@@ -23,13 +25,30 @@ export const countryOptions: CountryOption[] = [
   },
 ];
 
-
 export default function Login() {
+
+  const { handleChange, handleBlur, values, errors, handleSubmit } = useFormik({
+    initialValues: {
+      mobile: "",
+      password: ""
+    },
+    onSubmit: async (values) => {
+      try {
+        const response = await customAxios.post("/api/auth/login", values)
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          alert("Login successful!");
+          navigate("/question");
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
     countryOptions[0]
   );
-  const [mobile, setMobileNumber] = useState("");
-  const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -37,7 +56,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
-      const response = await customAxios.post("/api/auth/login", { mobile: mobile, password: password });
+      const response = await customAxios.post("/api/auth/login", {});
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         alert("Login successful!");
@@ -55,7 +74,7 @@ export default function Login() {
         <span className="absolute left-0 bottom-1 w-full h-2 bg-[#fac166] z-0 "></span>
       </div>
 
-      <form className="p-5 flex flex-col  shadow-lg " onSubmit={handleLogin}>
+      <form className="p-5 flex flex-col  shadow-lg " onSubmit={handleSubmit}>
         <label className="text-[18px] font-bold">Mobile Number</label>
         <div className="flex gap-2 flex-row">
           <Select
@@ -90,8 +109,10 @@ export default function Login() {
             type="tel"
             placeholder="Enter mobile number"
             className=" p-2 md:pl-10 outline-none text-gray-700 border-2 border-[#c4c4c4] rounded-md mt-2 "
-            value={mobile}
-            onChange={(e) => setMobileNumber(e.target.value)}
+            value={values.mobile}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="mobile"
           />
         </div>
 
@@ -100,8 +121,10 @@ export default function Login() {
           type="password"
           placeholder="Enter Password"
           className="flex-1 p-2 outline-none text-gray-700 border-2 border-[#c4c4c4] rounded-md mt-2   "
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          name="password"
         />
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         <button
